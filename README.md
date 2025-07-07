@@ -1,20 +1,23 @@
-D&D 5e API to MySQL Database Synchronizer
-This project provides a complete solution for fetching all data from the public D&D 5th Edition API and storing it in a fully relational MySQL database. It consists of a Node.js backend server that handles the API requests and database transactions, and a web-based control panel to trigger the synchronization process.
+Icon: fa-database
+Description: DND 5E MySQL DB Builder From Official API
+GitHub: https://github.com/Lhorath/DND-DB-BUILDER
 
-Features
-Complete Data Sync: Includes endpoints to sync all 24 major resources from the D&D 5e API.
+# D&D 5e API to MySQL Database Synchronizer
 
-Fully Relational: The database schema is designed with proper relational links, using join tables to avoid data redundancy.
+This project provides a complete solution for fetching all data from the public [D&D 5th Edition API](https://www.dnd5eapi.co/) and storing it in a fully relational MySQL database. It consists of a Node.js backend server that handles the API requests and database transactions, and a web-based control panel to trigger the synchronization process.
 
-Enriched Data: Specialized sync functions handle complex resources (like classes, monsters, and races) by fetching nested data and populating multiple tables in a single, safe transaction.
+## Features
 
-Web Control Panel: An easy-to-use HTML interface allows you to trigger sync operations for individual resources or all at once.
+- **Complete Data Sync:** Includes endpoints to sync all 24 major resources from the D&D 5e API.
+- **Fully Relational:** The database schema is designed with proper relational links, using join tables to avoid data redundancy.
+- **Enriched Data:** Specialized sync functions handle complex resources (like `classes`, `monsters`, and `races`) by fetching nested data and populating multiple tables in a single, safe transaction.
+- **Web Control Panel:** An easy-to-use HTML interface allows you to trigger sync operations for individual resources or all at once.
+- **Master Controls:** Includes "Sync All" and "Clear Database" buttons for convenient database management.
+- **Progress Tracking:** A progress bar provides visual feedback during the "Sync All" operation.
 
-Master Controls: Includes "Sync All" and "Clear Database" buttons for convenient database management.
+## Project Structure
 
-Progress Tracking: A progress bar provides visual feedback during the "Sync All" operation.
-
-Project Structure
+```
 .
 ├── public/
 │   └── index.html        # The frontend control panel
@@ -23,44 +26,51 @@ Project Structure
 ├── server.js             # The Node.js backend server
 ├── package.json
 └── .gitignore            # Specifies files for Git to ignore
+```
 
-Setup and Installation
+## Setup and Installation
+
 Follow these steps to get the project running on your local machine.
 
-Prerequisites
-Node.js (which includes npm)
+### Prerequisites
 
-A running MySQL or MariaDB server
+- [Node.js](https://nodejs.org/) (which includes npm)
+- A running [MySQL](https://www.mysql.com/) or MariaDB server
 
-1. Clone the Repository
+### 1. Clone the Repository
+
 Clone this repository to your local machine:
-
+```bash
 git clone <your-repository-url>
 cd <repository-folder>
+```
 
-2. Install Dependencies
+### 2. Install Dependencies
+
 Install the necessary Node.js packages using npm:
-
+```bash
 npm install
-
+```
 This will install Express, node-fetch, and the mysql driver.
 
-3. Set Up the Database
-Open your preferred MySQL client (like MySQL Workbench, DBeaver, or the command line).
+### 3. Set Up the Database
 
-Create a new database. The server is configured to use dnd_db by default.
+1.  Open your preferred MySQL client (like MySQL Workbench, DBeaver, or the command line).
+2.  Create a new database. The server is configured to use `dnd_db` by default.
+    ```sql
+    CREATE DATABASE dnd_db;
+    ```
+3.  Use the new database:
+    ```sql
+    USE dnd_db;
+    ```
+4.  Run the `dnd-schema.sql` file provided in this repository. This will create all the necessary tables with the correct relational structure.
 
-CREATE DATABASE dnd_db;
+### 4. Configure Database Connection
 
-Use the new database:
+Open the `server.js` file and ensure the `dbConfig` object matches your MySQL setup (host, user, password, and database name).
 
-USE dnd_db;
-
-Run the dnd-schema.sql file provided in this repository. This will create all the necessary tables with the correct relational structure.
-
-4. Configure Database Connection
-Open the server.js file and ensure the dbConfig object matches your MySQL setup (host, user, password, and database name).
-
+```javascript
 // server.js
 const dbConfig = {
     host: 'localhost',
@@ -68,21 +78,20 @@ const dbConfig = {
     password: '',       // Your MySQL password
     database: 'dnd_db'
 };
+```
 
-5. Run the Server
+### 5. Run the Server
+
 Start the backend server from your terminal:
-
+```bash
 node server.js
+```
+You should see a confirmation message that the server is running on `http://localhost:3000`.
 
-You should see a confirmation message that the server is running on http://localhost:3000.
+## How to Use
 
-How to Use
-Once the server is running, open your web browser and navigate to http://localhost:3000.
-
-You will see the Database Synchronizer control panel.
-
-It is highly recommended to run the sync operations in the order they appear on the page, as this ensures that foundational data (like proficiencies) is in the database before the data that links to it (like races).
-
-Alternatively, use the "Sync All" button to populate the entire database in the correct order automatically.
-
-The status panel will show the progress and log any successes or errors.
+1.  Once the server is running, open your web browser and navigate to `http://localhost:3000`.
+2.  You will see the **Database Synchronizer** control panel.
+3.  It is highly recommended to run the sync operations in the order they appear on the page, as this ensures that foundational data (like `proficiencies`) is in the database before the data that links to it (like `races`).
+4.  Alternatively, use the **"Sync All"** button to populate the entire database in the correct order automatically.
+5.  The status panel will show the progress and log any successes or errors.
